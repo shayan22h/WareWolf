@@ -1,0 +1,86 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+}
+
+/* Centered Container */
+.container {
+    text-align: center;
+    background: white;
+    padding: 40px 20px 20px; /* Extra top padding for aesthetics */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Header Styling */
+h1 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    margin-top: 10px; /* Small space from the top */
+}
+
+/* Buttons Wrapper */
+.button-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+button {
+    padding: 8px 12px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Unique Button Colors */
+button.admin-btn {
+    background-color: #007bff; /* Blue for Admin */
+}
+
+button.admin-btn:hover {
+    background-color: #0056b3;
+}
+
+button.user-btn {
+    background-color: #28a745; /* Green for User */
+}
+
+button.user-btn:hover {
+    background-color: #1e7e34;
+}
+
+/* Passcode Field */
+#adminPasscode {
+    margin-top: 10px;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/MainPage.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <h1>Ware Wolf :</h1>
+        
+        <!-- Button Wrapper with Admin and User Buttons -->
+        <div class="button-wrapper">
+            <button class="admin-btn" onclick="showAdminPasscode()">Admin</button>
+            <button class="user-btn" onclick="handleUserSubmit()">User</button>
+        </div>
+
+        <!-- Admin Passcode Input (Initially Hidden) -->
+        <div id="adminPasscode" style="display:none;">
+            <label for="passcode">Enter Passcode:</label>
+            <input type="password" id="passcode" name="passcode">
+            <button onclick="handleAdminSubmit()">Submit</button>
+        </div>
+    </div>
+</body>
+</html>
