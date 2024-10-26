@@ -5,13 +5,13 @@ function showAdminPasscode() {
 function handleAdminSubmit() {
     var passcode = document.getElementById("passcode").value;
     if (passcode === "4444") {
-        window.location.href = "html/admin.html";
+        window.location.href = "warewolf/html/admin.html";
     } else {
         alert("Incorrect Passcode");
     }
 }
 
 function handleUserSubmit() {
-    window.location.href = "html/user.html";
+    window.location.href = "warewolf/html/user.html";
 }
 

@@ -8,9 +8,12 @@
 <body>
     <h1>User Submission</h1>
 
-    <form action="submit.php" method="POST">
+    <form action="../backend/submit.php" method="POST">
         <label for="name">Enter your name:</label>
         <input type="text" id="name" name="name" required><br><br>
+
+        <label for ="passcode"> Enter The Passcode</label>
+        <input type="text" id="passcode" name="passcode" required> <br><br>
 
         <input type="submit" value="Submit">
     </form>
