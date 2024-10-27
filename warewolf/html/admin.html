@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Admin Page</title>
 </head>
 <body>
     <h1>Admin Panel</h1>
     <p>Here, admins can manage users, view names, etc.</p>
+<!-- Button to retrieve names -->
+    <!-- Form to get names -->
+    <form action="../backend/admin.php" method="GET">
+        <button type="submit">Get All User Names</button>
+    </form>
 
-    <!-- Add admin-specific features here -->
+    <!-- Display area for JSON response -->
+    <pre id="output">
+        <?php
+            if (isset($_GET['users'])) {
+                echo htmlspecialchars($_GET['users']);
+            }
+        ?>
+    </pre>
+    <script src="../js/admin.js"> </script>
+    
 </body>
 </html>
