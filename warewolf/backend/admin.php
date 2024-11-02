@@ -1,9 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-echo "Starting admin.php";
 
-header('Content-Type: application/json');
+// Starting with PHP tag right away
+header("Content-Type: application/json");
 
 // Include the configuration file
 require_once '../../db_config.php';
@@ -18,9 +16,7 @@ $dbname = $dbConfig['dbname'];
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(["error" => "Database connection failed"]);
-    exit();
+    die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
 }
 
 $sql = "SELECT names FROM PlayersName"; // Updated column name

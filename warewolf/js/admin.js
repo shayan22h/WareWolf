@@ -1,11 +1,14 @@
 // Function to fetch names from the server
-function fetchNames() {
-    fetch( '../backend/admin.php',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+const option = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
     }
+};
+
+function fetchNames() {
+    console.log("Entering fetchNames ");
+    fetch( '../backend/admin.php',option
     )
     .then (response => {
         if (!response.ok) {
