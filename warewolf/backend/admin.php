@@ -18,7 +18,9 @@ $dbname = $dbConfig['dbname'];
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+    http_response_code(500);
+    echo json_encode(["error" => "Database connection failed"]);
+    exit();
 }
 
 $sql = "SELECT names FROM PlayersName"; // Updated column name
@@ -31,10 +33,9 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Redirect back to admin.html with JSON data as URL parameter
-header('Location: ../html/admin.html?users=' . urlencode(json_encode($users)));
-exit;
-
 $conn->close();
+
+// Send the data as JSON
+echo json_encode($users);
 
 ?>
