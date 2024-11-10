@@ -4,15 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
+    <style>
+        /* Flex container styling */
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 40px;
+        }
+
+        /* Styling for players and roles lists */
+        #playersList, #rolesList {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        /* Center align the buttons at the top */
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Admin Panel</h1>
-    <p>Here, admins can manage users, view names, etc.</p>
+    <p>Here, admins can manage users, view names, assign roles, and start the game.</p>
     <!-- Button to retrieve names -->
-    <button id="getNamesButton">Get All User Names</button>
-
-    <!-- Display area for JSON response -->
-    <pre id="output"></pre>
+    <button id="getNamesButton">Fetch Players Name</button>
+    <button id="assignRolesButton_bt_id"> Asign Roles </button>
+    <button id="startGame_bt_id"> Start Game </button>
+    
+    <!-- Main container for players and roles lists -->
+    <div id="container">
+        <!-- Container for players list -->
+        <div id="playersList">Loading player names...</div>
+        
+        <!-- Container for roles list -->
+        <div id="rolesList">Loading roles...</div>
+    </div>
     
     <script src="../js/admin.js"> </script>
     
