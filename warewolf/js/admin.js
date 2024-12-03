@@ -7,6 +7,16 @@ const option = {
 };
 const RolesArr = ["kane", "Sniper", "Doctor"," Saul", "Pedar Khande", "Matador"]
 let NoOfPlayers = 0;
+let PlayersNames = []
+
+// Utility function to shuffle an array (Fisher-Yates shuffle)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 
 function fetchNames() {
     console.log("Entering fetchNames : ");
@@ -22,7 +32,8 @@ function fetchNames() {
         // number of players
         NoOfPlayers = data.length;
         console.log("No of Players is");
-        console.log(NoOfPlayers); 
+        console.log(NoOfPlayers);
+        PlayersNames.push(data); 
     
         // Players List
         const playersList = document.getElementById('playersList');
@@ -84,33 +95,53 @@ function assignRoles() {
         const selectedValue = parseInt(dropdown.value);
         console.log('the dropdown value is ' + selectedValue);
         selectedTotal += selectedValue;
-
-        // Create object with role and selected count
-        const roleAssignment = {
-            Role: RolesArr[index],
-            Number: selectedValue
-        };
-        RoleObjArr.push(roleAssignment);
+        if (selectedValue > 0)
+        {
+            // Create object with role and selected count
+            const roleAssignment = {
+                Role: RolesArr[index],
+                Number: selectedValue
+            };
+            RoleObjArr.push(roleAssignment);
+        }
     });
     console.log(RoleObjArr);
 
     
     // Assume `data` represents the list of players fetched in `fetchNames`
     const totalPlayers = document.getElementById('playersList').children.length;
-    let RoleObjArrCnt = 0;
+
     // Check if total selected matches number of players
     if (selectedTotal === totalPlayers) {
 
-        RoleObjArr.forEach(RoleObj => {
-            console.log(RoleObj);
-            if(RoleObj.Number)
-            {
-                RoleObjArrCnt++;
-                
-            }
+        console.log("Valid assignment, proceeding.");
 
+        // Flatten role assignments into a list of roles
+        let allRoles = [];
+        RoleObjArr.forEach(roleObj => {
+            for (let i = 0; i < roleObj.Number; i++) {
+                allRoles.push(roleObj.Role);
+            }
         });
 
+        console.log('All roles:', allRoles);
+
+        // Shuffle the player names
+        let shuffledPlayers = [...PlayersNames[0]]; // Flatten the nested PlayersNames array
+        shuffledPlayers = shuffleArray(shuffledPlayers);
+        console.log('Shuffled players:', shuffledPlayers);
+
+        // Shuffle the roles to add additional randomness
+        allRoles = shuffleArray(allRoles);
+        console.log('Shuffled roles:', allRoles);
+
+        // Assign roles to players
+        const PlayerNameRoleList = shuffledPlayers.map((player, index) => ({
+            Name: player,
+            Role: allRoles[index],
+        }));
+
+        console.log('Final Player-Role assignments:', PlayerNameRoleList);
     } else {
         alert(`Total selected (${selectedTotal}) does not match number of players (${totalPlayers}). Please adjust.`);
     }
@@ -119,5 +150,14 @@ function assignRoles() {
 
 // Event listener for assigning roles
 document.getElementById('assignRolesButton_bt_id').addEventListener('click', assignRoles);
+
+
+
+function DeleteGame()
+{
+    alert("Removing Game ");
+}
+// Event listener for assigning roles
+document.getElementById('remove_db_bt_id').addEventListener('click', DeleteGame);
 
 
