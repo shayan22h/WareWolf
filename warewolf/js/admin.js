@@ -1,3 +1,18 @@
+
+const ws = new WebSocket('ws://localhost:8080');
+ws.onopen = () => {
+    console.log('Connected to WebSocket server as Admin.');
+    ws.send(JSON.stringify({ type: 'register', name: 'Admin' }));
+};
+
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
+
+ws.onclose = (event) => {
+    console.warn('WebSocket closed:', event);
+};
+
 // Function to fetch names from the server
 const option = {
     method: 'POST',
@@ -140,6 +155,11 @@ function assignRoles() {
             Name: player,
             Role: allRoles[index],
         }));
+   
+        ws.send(JSON.stringify({
+            type: 'assign_roles',
+            roles: PlayerNameRoleList,
+        }));
 
         console.log('Final Player-Role assignments:', PlayerNameRoleList);
     } else {
@@ -153,9 +173,24 @@ document.getElementById('assignRolesButton_bt_id').addEventListener('click', ass
 
 
 
-function DeleteGame()
-{
-    alert("Removing Game ");
+function DeleteGame() {
+
+    fetch('../backend/deletegame.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Assuming your server sends a success message
+    })
+    .then(message => {
+        alert(message); // Show server's response (e.g., "All players removed successfully.")
+    })
+    .catch(error => console.error('Error removing game:', error)); 
 }
 // Event listener for assigning roles
 document.getElementById('remove_db_bt_id').addEventListener('click', DeleteGame);
