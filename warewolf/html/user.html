@@ -6,16 +6,19 @@
     <title>User Page</title>
 </head>
 <body>
-    <h1>User Submission</h1>
+    <h1>User Submission Panel</h1>
 
-    <form action="../backend/submit.php" method="POST">
+    <form id="userForm">
         <label for="name">Enter your name:</label>
         <input type="text" id="name" name="name" required><br><br>
 
-        <label for ="passcode"> Enter The Passcode</label>
-        <input type="text" id="passcode" name="passcode" required> <br><br>
+        <label for="passcode">Enter The Passcode:</label>
+        <input type="text" id="passcode" name="passcode" required><br><br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" id="submit_bt_id" value="Submit">
     </form>
+    <p id="responseMessage"></p>
+
+    <script src="../js/user.js"></script>
 </body>
 </html>
