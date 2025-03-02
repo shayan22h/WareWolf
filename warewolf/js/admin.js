@@ -1,5 +1,6 @@
 
-const ws = new WebSocket('ws://localhost:8080');
+
+const ws = new WebSocket('wss://yourAddress/ws/');
 ws.onopen = () => {
     console.log('Connected to WebSocket server as Admin.');
     ws.send(JSON.stringify({ type: 'register', name: 'Admin' }));
@@ -20,7 +21,22 @@ const option = {
         'Content-Type': 'application/json',
     }
 };
-const RolesArr = ["kane", "Sniper", "Doctor"," Saul", "Pedar Khande", "Matador"]
+// Array of roles
+const RolesArr = [
+    "Shar Sade",
+    "Nostradamus",
+    "Kane",
+    "Herfei",
+    "Doctor",
+    "Konstantin",
+    "Saul Goodman",
+    "Pedar Khande",
+    "Matador",
+    "Jan Sakht",
+    "Tofangdar",
+    "Sherlock",
+    "Jack"
+];
 let NoOfPlayers = 0;
 let PlayersNames = []
 
@@ -78,7 +94,7 @@ function fetchNames() {
 
             const dropdown = document.createElement('select');
             dropdown.classList.add('role-dropdown'); // Add class to select dropdowns
-            ['0', '1', '2', '3'].forEach(optionText => {
+            ['0', '1', '2', '3' , '4' , '5' , '6'].forEach(optionText => {
                 const option = document.createElement('option');
                 option.value = optionText;
                 option.textContent = optionText;
@@ -140,18 +156,20 @@ function assignRoles() {
         });
 
         console.log('All roles:', allRoles);
-
+        
+        /*
         // Shuffle the player names
         let shuffledPlayers = [...PlayersNames[0]]; // Flatten the nested PlayersNames array
         shuffledPlayers = shuffleArray(shuffledPlayers);
         console.log('Shuffled players:', shuffledPlayers);
-
+        */
+        console.log("Updated PlayersNames:", PlayersNames);
         // Shuffle the roles to add additional randomness
         allRoles = shuffleArray(allRoles);
         console.log('Shuffled roles:', allRoles);
 
         // Assign roles to players
-        const PlayerNameRoleList = shuffledPlayers.map((player, index) => ({
+        const PlayerNameRoleList = PlayersNames.map((player, index) => ({
             Name: player,
             Role: allRoles[index],
         }));
@@ -196,3 +214,104 @@ function DeleteGame() {
 document.getElementById('remove_db_bt_id').addEventListener('click', DeleteGame);
 
 
+
+
+
+
+
+
+
+
+
+function updatePlayersDropdown(players) {
+    NoOfPlayers = players.length;
+    PlayersNames = players; // Store player names globally
+
+    // Players List UI
+    const playersList = document.getElementById('playersList');
+    playersList.innerHTML = ''; // Clear existing list
+
+    players.forEach(name => {
+        const playerText = document.createElement('div');
+        playerText.textContent = name;
+        playerText.style.marginBottom = '10px';
+        playersList.appendChild(playerText);
+    });
+
+    // Roles List UI
+    const rolesList = document.getElementById('rolesList');
+    rolesList.innerHTML = ''; // Clear existing list
+    rolesList.innerHTML = 'Number of players for this deck is ' + NoOfPlayers;
+
+    // Create dropdowns for role selection
+    RolesArr.forEach(role => {
+        const roleContainer = document.createElement('div');
+        roleContainer.style.marginBottom = '10px';
+
+        const roleText = document.createElement('span');
+        roleText.textContent = role;
+        roleText.style.marginRight = '10px';
+        roleContainer.appendChild(roleText);
+
+        const dropdown = document.createElement('select');
+        dropdown.classList.add('role-dropdown'); // Add class for role selection
+        ['0', '1', '2', '3', '4', '5', '6'].forEach(optionText => {
+            const option = document.createElement('option');
+            option.value = optionText;
+            option.textContent = optionText;
+            dropdown.appendChild(option);
+        });
+        roleContainer.appendChild(dropdown);
+
+        rolesList.appendChild(roleContainer);
+    });
+
+    console.log('Connected players and roles dropdown updated.');
+}
+
+
+
+
+function GetConnectedList() {
+    ws.send(JSON.stringify({
+        type: 'get_all_connections'
+    }));
+}
+
+// Function to remove all active connections
+function RemoveConnectedList() {
+    ws.send(JSON.stringify({
+        type: 'removes_all_connection'
+    }));
+}
+
+ws.onmessage = (event) => {
+    const response = JSON.parse(event.data);
+
+    if (response.type === 'get_all_connections') {
+        if (response.connections && response.connections.length > 0) {
+
+            PlayersNames.length = 0; // Reset the array
+            PlayersNames.push(response.connections);
+            console.log("Updated PlayersNames:", PlayersNames);
+            
+            // Update the UI with connected clients
+            updatePlayersDropdown(response.connections);
+        } else {
+            alert("No active connections.");
+        }
+    } else if (response.type === 'removes_all_connection') {
+        alert("All WebSocket connections have been removed.");
+    } else if (response.type === 'admin_role_list') {
+        // Display role assignments for the Admin client
+        let roleAssignments = "Assigned Roles:\n";
+        response.roles.forEach(entry => {
+            roleAssignments += `${entry.Name}: ${entry.AssignedRole}\n`;
+        });
+        alert(roleAssignments);
+    }
+};
+
+// Event listeners for the buttons
+document.getElementById('get_active_con_id').addEventListener('click', GetConnectedList);
+document.getElementById('remove_active_con_id').addEventListener('click', RemoveConnectedList);

@@ -1,8 +1,7 @@
-// WebSocket setup
-const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('wss://yourAddress/ws/');
 
 ws.onopen = () => {
-    console.log('Connected to WebSocket server as Admin.');
+    console.log('Connected to WebSocket server as User .');
 };
 
 ws.onerror = (error) => {
@@ -14,13 +13,38 @@ ws.onclose = (event) => {
 };
 
 let userName = 'shayan'; // Use `let` to allow reassignment
+let gFavRole = 'Kane'
+
+// Array of roles
+const RolesArr = [
+    "Nostradamus",
+    "Kane",
+    "Herfei",
+    "Doctor",
+    "Konstantin",
+    "Saul Goodman",
+    "Pedar Khande",
+    "Matador",
+    "Jan Sakht",
+    "Tofangdar"
+];
+
+// Populate the roles dropdown
+const roleSelect = document.getElementById('favRole');
+RolesArr.forEach(role => {
+    const option = document.createElement('option');
+    option.value = role;
+    option.textContent = role;
+    roleSelect.appendChild(option);
+});
+
 
 function SendNameToWebSocketServer() {
     console.log("Send Names To WebSocket Server:");
 
     // Ensure the WebSocket is open before sending data
     if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ type: 'register', name: userName }));
+        ws.send(JSON.stringify({ type: 'register', name: userName, favoriteRole: gFavRole }));
     } else {
         console.error("WebSocket is not connected.");
     }
@@ -42,7 +66,8 @@ function handleFormSubmit(event) {
     // Get form data
     const name = document.getElementById('name').value;
     const passcode = document.getElementById('passcode').value;
-
+    const favRole = document.getElementById('favRole').value.trim(); // Ensure it's a proper string
+    
     // Send the form data to the server using fetch
     fetch('../backend/submit.php', {
         method: 'POST',
@@ -64,6 +89,7 @@ function handleFormSubmit(event) {
             if (data.includes("New record added successfully")) {
                 // If the form submission is successful, update the WebSocket server
                 userName = name; // Update the userName
+                gFavRole = favRole;
                 SendNameToWebSocketServer(); // Send the name to WebSocket server
                 alert("Submission successful! Your name has been registered.");
             } else {
